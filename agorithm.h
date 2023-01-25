@@ -172,5 +172,4 @@ char *numberToChars(int n)
     string s = to_string(n);
     return stringToChars(s);
 };
-// int stringtoNumber(string s);
-// outtextxy(char*) cost
+

@@ -26,10 +26,11 @@ void drawxyAxis(){
 }
 void drawVertex(int x,int y,char* names){
     setlinestyle(0,0,2);
+    setcolor(BLACK);
     circle(x+10,y+10,radius);
-    outtextxy(x+8-radius,y+10+radius+2, names);
+    outtextxy(x-4-radius,y+10+radius+2, names);
 }
-void drawOneWayEdge(Vertex v1, Vertex v2, char* cost ){
+void drawOneWayEdge(Vertex v1, Vertex v2,char* name, char* cost ){
     setlinestyle(0,0,3);
     setcolor(BLACK);
     pair<pair<int,int>,pair<int,int>> eCor = getIntersectionCoordinates(v1,v2);
@@ -41,9 +42,10 @@ void drawOneWayEdge(Vertex v1, Vertex v2, char* cost ){
     pair<int,int> aPoint2 = aCor.second;
     line(ePoint.first+10,ePoint.second+10,aPoint1.first+10,aPoint1.second+10);
     line(ePoint.first+10,ePoint.second+10,aPoint2.first+10,aPoint2.second+10);
-    outtextxy((v1.x+v2.x)/2+10,(v1.y+v2.y)/2-6, cost);
+    outtextxy((v1.x+v2.x)/2+10,(v1.y+v2.y)/2-10, cost);
+    outtextxy((v1.x+v2.x)/2-20,(v1.y+v2.y)/2+20, name);
 }
-void drawTwoWayEdge(Vertex v1, Vertex v2, char* cost ){
+void drawTwoWayEdge(Vertex v1, Vertex v2,char* name, char* cost ){
     setlinestyle(0,0,3);
     setcolor(BLACK);
     pair<pair<int,int>,pair<int,int>> eCor = getIntersectionCoordinates(v1,v2);
@@ -51,16 +53,28 @@ void drawTwoWayEdge(Vertex v1, Vertex v2, char* cost ){
     pair<int,int> ePoint = eCor.second;
     line(sPoint.first+10,sPoint.second+10,ePoint.first+10,ePoint.second+10);
     outtextxy((v1.x+v2.x)/2+10,(v1.y+v2.y)/2-6, cost);
+    outtextxy((v1.x+v2.x)/2-20,(v1.y+v2.y)/2+20, name);
 }
-
+void deleteVertex(Vertex v1){
+    setlinestyle(0,0,2);
+    setcolor(BLACK);
+    circle(v1.x+10,v1.y+10,radius);
+    outtextxy(v1.x-4-radius,v1.y+10+radius+2, "                 ");
+}
 void deleteTwoWayEdge(Vertex v1,Vertex v2){
     setcolor(WHITE);
     setlinestyle(0,0,3);
-    line(v1.x+10,v1.y+10,v2.x+10,v2.y+10);
     pair<pair<int,int>,pair<int,int>> eCor = getIntersectionCoordinates(v1,v2);
     pair<int,int> sPoint = eCor.first;
     pair<int,int> ePoint = eCor.second;
     line(sPoint.first+10,sPoint.second+10,ePoint.first+10,ePoint.second+10);
+    outtextxy((v1.x+v2.x)/2+10,(v1.y+v2.y)/2-10, "       ");
+    outtextxy((v1.x+v2.x)/2+10,(v1.y+v2.y)/2-9,  "       ");
+    outtextxy((v1.x+v2.x)/2-20,(v1.y+v2.y)/2+20, "       ");
+    setlinestyle(0,0,2);
+    setcolor(BLACK);
+    circle(v1.x+10,v1.y+10,radius);
+    circle(v2.x+10,v2.y+10,radius);
     // delay(1000);
 }
 void deleteOneWayEdge(Vertex v1, Vertex v2){
@@ -75,16 +89,22 @@ void deleteOneWayEdge(Vertex v1, Vertex v2){
     pair<int,int> aPoint2 = aCor.second;
     line(ePoint.first+10,ePoint.second+10,aPoint1.first+10,aPoint1.second+10);
     line(ePoint.first+10,ePoint.second+10,aPoint2.first+10,aPoint2.second+10);
+    outtextxy((v1.x+v2.x)/2+10,(v1.y+v2.y)/2-10, "       ");
+    outtextxy((v1.x+v2.x)/2+10,(v1.y+v2.y)/2-9,  "       ");
+    outtextxy((v1.x+v2.x)/2-20,(v1.y+v2.y)/2+20, "       ");
+    setlinestyle(0,0,2);
+    setcolor(BLACK);
+    circle(v1.x+10,v1.y+10,radius);
+    circle(v2.x+10,v2.y+10,radius);
 }
 void highlightVertex(Vertex v1){
     setfillstyle(LTSLASH_FILL,BLUE);
-    floodfill(v1.x,v1.y,BLACK);
+    floodfill(v1.x+10,v1.y+10,BLACK);
 }
 void highlightEdge(Vertex v1, Vertex v2){
     deleteTwoWayEdge(v1,v2);
     setcolor(BLUE);
     setlinestyle(1,0,3);
-    // line(v1.x+10,v1.y+10,v2.x+10,v2.y+10);
     pair<pair<int,int>,pair<int,int>> eCor = getIntersectionCoordinates(v1,v2);
     pair<int,int> sPoint = eCor.first;
     pair<int,int> ePoint = eCor.second;
@@ -98,5 +118,8 @@ void unHighlightVertex(Vertex v1){
 void unHighlightEdge(Vertex v1, Vertex v2){
     setlinestyle(0,0,3);
     setcolor(BLACK);
-    line(v1.x+10,v1.y+10,v2.x+10,v2.y+10);
+    pair<pair<int,int>,pair<int,int>> eCor = getIntersectionCoordinates(v1,v2);
+    pair<int,int> sPoint = eCor.first;
+    pair<int,int> ePoint = eCor.second;
+    line(sPoint.first+10,sPoint.second+10,ePoint.first+10,ePoint.second+10);    
 }
