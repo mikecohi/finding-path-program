@@ -57,7 +57,7 @@ void drawTwoWayEdge(Vertex v1, Vertex v2,char* name, char* cost ){
 }
 void deleteVertex(Vertex v1){
     setlinestyle(0,0,2);
-    setcolor(BLACK);
+    setcolor(WHITE);
     circle(v1.x+10,v1.y+10,radius);
     outtextxy(v1.x-4-radius,v1.y+10+radius+2, "                 ");
 }
@@ -102,18 +102,29 @@ void highlightVertex(Vertex v1){
     floodfill(v1.x+10,v1.y+10,BLACK);
 }
 void highlightEdge(Vertex v1, Vertex v2){
-    deleteTwoWayEdge(v1,v2);
-    setcolor(BLUE);
-    setlinestyle(1,0,3);
+    setcolor(WHITE);
+    setlinestyle(0,0,3);
     pair<pair<int,int>,pair<int,int>> eCor = getIntersectionCoordinates(v1,v2);
     pair<int,int> sPoint = eCor.first;
     pair<int,int> ePoint = eCor.second;
     line(sPoint.first+10,sPoint.second+10,ePoint.first+10,ePoint.second+10);
+    
+    setlinestyle(0,0,2);
+    setcolor(BLACK);
+    circle(v1.x+10,v1.y+10,radius);
+    circle(v2.x+10,v2.y+10,radius);
+    setcolor(BLUE);
+    setlinestyle(1,0,3);
+    
+    line(sPoint.first+10,sPoint.second+10,ePoint.first+10,ePoint.second+10);
     setcolor(BLACK);
 }
 void unHighlightVertex(Vertex v1){
-    setfillstyle(EMPTY_FILL,WHITE);
-    floodfill(v1.x,v1.y,BLACK);
+    
+    setlinestyle(0,0,2);
+    setcolor(WHITE);
+    circle(v1.x+10,v1.y+10,radius);
+    drawVertex(v1.x,v1.y,stringToChars(v1.name));
 }
 void unHighlightEdge(Vertex v1, Vertex v2){
     setlinestyle(0,0,3);

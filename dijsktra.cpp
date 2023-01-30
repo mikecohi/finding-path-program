@@ -7,8 +7,7 @@ const int maxn = 1000;
 
 class Graph
 {
-
-public:
+protected:
     vector<Vertex> vList;
     vector<pair<int, pair<int, string>>> adj[maxn]; // cạnh kề, (tên,kc)
     int numberofVertex;
@@ -96,11 +95,8 @@ public:
         
     }
     void removeAll()
-    {
-        
-        // xóa hết :
-
-        for (int i = 0;i < numberofVertex;i++){
+    {    
+        for (int i = 0;i < numberofVertex;i++) {
             while (!adj[i].empty()) adj[i].pop_back();
         }
         while (!vList.empty()) vList.pop_back();
@@ -111,16 +107,63 @@ public:
     };
     vector<int> getShortestWay(string name1, string name2)
     {
-        vector<int> temp;
-        temp.push_back(1);
+        int previous[maxn];
+        int s = getVertex(name1);
+        int t = getVertex(name2);
+        vector<long long> d(numberofVertex + 1, INF); //vector lưu khoang cách ngắn nhất
+        d[s] = 0;
+        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> Q;
+        Q.push({0, s});
+        while (!Q.empty())
+        {
+            pair<int, int> top = Q.top();
+            Q.pop();
+            int u = top.second;
+            int length = top.first;
+            if (length > d[u])
+                continue;
+            for (auto it : adj[u])
+            {
+                int v = it.first;
+                int w = it.second.first; //kc giữa 2
+                if (d[v] > d[u] + w)
+                {
+                    d[v] = d[u] + w;
+                    Q.push({d[v], v});
+                    previous[v] = u;
+                }
+            }
+        }
+        vector<int> path;
+        while (1)
+        {
+            path.push_back(t);
+            if (t == s)
+                break;
+            t = previous[t];
+        }
+        reverse(path.begin(), path.end());
+        return path;
     };
     void highlightWay(vector<int> path)
     {
-        cout << "Highlight Way" << endl;
+        for (int i=0; i<path.size(); i++) {
+            
+            highlightVertex(vList[path[i]]);
+            if(i == path.size()-1)
+            continue;
+            highlightEdge(vList[path[i]],vList[path[i+1]]);
+        }
     }
     void unhighlightWay(vector<int> path)
     {
-        cout << "Un-highlight Way" << endl;
+        for (int i=0; i<path.size(); i++) {
+            
+            unHighlightVertex(vList[path[i]]);
+            if(i == path.size()-1)
+            continue;
+            unHighlightEdge(vList[path[i]],vList[path[i+1]]);
+        }
     }
     void dfs(); // Minh
     void printList()
@@ -148,7 +191,6 @@ public:
         }
         return -1;
     }
-
     int getCost(string name1, string name2)
     {
         int index1 = getVertex(name1);
@@ -288,7 +330,7 @@ public:
             }
         } while (option != 0);
     };
-    void Edit()
+    void Print()
     {
         // string w, p, place;
         // int way, option;
@@ -318,13 +360,13 @@ public:
     };
     void Hightlight()
     {
-        // fflush(stdin);
         string begin, end;
         cout << "=== FIND SHORTEST WAY ===" << endl;
         cout << "from: ";
-        getline(cin, begin);
         fflush(stdin);
+        getline(cin, begin);
         cout << " to: ";
+        fflush(stdin);
         getline(cin, end);
 
         vector<int> path = graph1.getShortestWay(begin, end);
@@ -360,7 +402,7 @@ int main()
             menu1.Remove();
             break;
         case 4:
-            menu1.Edit();
+            menu1.Print();
             break;
         case 5:
             menu1.Hightlight();
