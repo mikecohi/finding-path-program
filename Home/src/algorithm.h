@@ -8,7 +8,7 @@ struct Vertex
     int y;
     string name;
 };
-float tinhKhoangCach (pair<float,float> diem1, pair<float,float> diem2){
+float calDistance (pair<float,float> diem1, pair<float,float> diem2){
     return sqrt((diem1.first-diem2.first)*(diem1.first-diem2.first)+(diem1.second-diem2.second)*(diem1.second-diem2.second));
 }
 using Point = std::pair<float, float>;
@@ -107,18 +107,19 @@ pair<pair<float,float>,pair<float,float>> getIntersectionCoordinates(Vertex v1, 
     pair<float, float> tam2 = {v2.x, v2.y};
     vector<Point> set1= intersects(tam1,tam2,tam1,radius,false);
     vector<Point> set2= intersects(tam1,tam2,tam2,radius,false);
-    float minDistance = min(min(tinhKhoangCach(set1[0],set2[0]),tinhKhoangCach(set1[0],set2[1])),min(tinhKhoangCach(set1[1],set2[0]),tinhKhoangCach(set1[1],set2[1])));
-     if (minDistance == tinhKhoangCach(set1[0],set2[0]))
+    // check what is correct point
+    float minDistance = min(min(calDistance(set1[0],set2[0]),calDistance(set1[0],set2[1])),min(calDistance(set1[1],set2[0]),calDistance(set1[1],set2[1])));
+     if (minDistance == calDistance(set1[0],set2[0]))
     {
         pair<float,float> g1 = set1[0];
         pair<float,float> g2 = set2[0];
         return {g1,g2};
-    } else if (minDistance == tinhKhoangCach(set1[0],set2[1]))
+    } else if (minDistance == calDistance(set1[0],set2[1]))
     {
         pair<float,float> g1 = set1[0];
         pair<float,float> g2 = set2[1];
         return {g1,g2};
-    } else if (minDistance == tinhKhoangCach(set1[1],set2[0]) )
+    } else if (minDistance == calDistance(set1[1],set2[0]) )
     {
         pair<float,float> g1 = set1[1];
         pair<float,float> g2 = set2[0];
@@ -134,30 +135,30 @@ pair<pair<int, int>, pair<int, int>> getArrowCoordinates(pair<int, int> c1, pair
 {
     if (c2.second - c1.second > 0 && c2.first - c1.first > 0)
     {
-        return {{c2.first,c2.second -10},{c2.first-10,c2.second}};
+        return {{c2.first,c2.second -15},{c2.first-15,c2.second}};
     }
     else if (c2.second - c1.second > 0 && c2.first - c1.first < 0 )
     {
-        return {{c2.first,c2.second -10},{c2.first+10,c2.second}};
+        return {{c2.first,c2.second -15},{c2.first+15,c2.second}};
     } else if (c2.second - c1.second < 0 && c2.first - c1.first > 0)
     {
-        return {{c2.first,c2.second +10},{c2.first-10,c2.second}};
+        return {{c2.first,c2.second +15},{c2.first-15,c2.second}};
     }
     else if (c2.second - c1.second < 0 && c2.first - c1.first < 0 )
     {
-        return {{c2.first,c2.second +10},{c2.first +10,c2.second}};
+        return {{c2.first,c2.second +15},{c2.first +15,c2.second}};
     } else if ( c2.second == c1.second )
     {
         if ( c2.first > c1.first) 
-            return {{c2.first-10,c2.second -10},{c2.first -10,c2.second+10}};
+            return {{c2.first-15,c2.second -15},{c2.first -15,c2.second+15}};
         else
-            return {{c2.first+10,c2.second -10},{c2.first +10,c2.second+10}}; 
+            return {{c2.first+15,c2.second -15},{c2.first +15,c2.second+15}}; 
     } else if (c2.first == c1.first)
     {
         if (c2.second > c1.second)
-            return  {{c2.first-10,c2.second -10},{c2.first +10,c2.second-10}};
+            return  {{c2.first-15,c2.second -15},{c2.first +15,c2.second-15}};
         else 
-            return {{c2.first-10,c2.second +10},{c2.first +10,c2.second+10}};
+            return {{c2.first-15,c2.second +15},{c2.first +15,c2.second+15}};
     }
     
 }
